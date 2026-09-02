@@ -43,7 +43,6 @@
 <body>
 
 
-    <!-- This is where Leaflet places the map -->
     <div id="map"></div>
 
 
@@ -58,33 +57,30 @@
     <script>
 
         // Create a non-geographical Leaflet map.
-        // CRS.Simple lets us use fictional/game maps instead of Earth coordinates.
-
         const map = L.map('map', {
             crs: L.CRS.Simple,
             minZoom: -3
         });
 
 
-        // Temporary working area.
-        // We will replace this with an actual Pokémon region map later.
+        // Kanto map dimensions:
+        // Width:  2048 pixels
+        // Height: 1448 pixels
 
         const bounds = [
             [0, 0],
-            [1000, 1600]
+            [1448, 2048]
         ];
 
 
-        L.rectangle(bounds, {
-            color: '#666',
-            weight: 2,
-            fillColor: '#eeeeee',
-            fillOpacity: 1
-        }).addTo(map);
+        // Place the Kanto image onto the Leaflet map.
+        const kantoMap = L.imageOverlay(
+            'maps/kanto.png',
+            bounds
+        ).addTo(map);
 
 
-        // Show the whole temporary map area.
-
+        // Automatically show the entire region when the map loads.
         map.fitBounds(bounds);
 
 
