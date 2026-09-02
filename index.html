@@ -35,6 +35,44 @@
             background: #d8d8d8;
         }
 
+        /* Custom status markers */
+
+.status-marker {
+    background: transparent;
+    border: none;
+}
+
+.status-pin {
+    width: 24px;
+    height: 24px;
+
+    border: 2px solid white;
+
+    border-radius: 50% 50% 50% 0;
+
+    transform: rotate(-45deg);
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Available */
+.status-available {
+    background: #2f80ed;
+}
+
+
+/* Reserved */
+.status-reserved {
+    background: #f2c94c;
+}
+
+
+/* Claimed */
+.status-claimed {
+    background: #d64545;
+}
+
     </style>
 
 </head>
@@ -113,10 +151,40 @@
 
 npcData.forEach(function(npc) {
 
-    const marker = L.marker([
-        npc.y,
-        npc.x
-    ]).addTo(map);
+    // Convert the status into a CSS class.
+    const statusClass =
+        'status-' + npc.status.toLowerCase();
+
+
+    // Create a custom marker coloured by status.
+    const statusIcon = L.divIcon({
+
+        className: 'status-marker',
+
+        html:
+            '<div class="status-pin ' +
+            statusClass +
+            '"></div>',
+
+        iconSize: [28, 28],
+
+        iconAnchor: [14, 28],
+
+        popupAnchor: [0, -28]
+
+    });
+
+
+    const marker = L.marker(
+        [
+            npc.y,
+            npc.x
+        ],
+        {
+            icon: statusIcon
+        }
+    ).addTo(map);
+
 
     marker.bindPopup(
         '<strong>' + npc.character + '</strong><br>' +
