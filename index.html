@@ -56,37 +56,52 @@
 
     <script>
 
-        // Create a non-geographical Leaflet map.
-        const map = L.map('map', {
-            crs: L.CRS.Simple,
-            minZoom: -3
-        });
+       <script>
+
+    // Create a non-geographical Leaflet map.
+    const map = L.map('map', {
+        crs: L.CRS.Simple,
+        maxBoundsViscosity: 1.0
+    });
 
 
-        // Kanto map dimensions:
-        // Width:  2048 pixels
-        // Height: 1448 pixels
+    // Kanto map dimensions:
+    // Width:  2048 pixels
+    // Height: 1448 pixels
 
-        const bounds = [
-            [0, 0],
-            [1448, 2048]
-        ];
-
-
-        // Place the Kanto image onto the Leaflet map.
-        const kantoMap = L.imageOverlay(
-            'maps/kanto.png',
-            bounds
-        ).addTo(map);
+    const bounds = [
+        [0, 0],
+        [1448, 2048]
+    ];
 
 
-        // Automatically show the entire region when the map loads.
-        map.fitBounds(bounds);
+    // Place the Kanto image onto the Leaflet map.
+    const kantoMap = L.imageOverlay(
+        'maps/kanto.png',
+        bounds,
+        {
+            alt: 'Map of the Kanto region'
+        }
+    ).addTo(map);
 
 
-    </script>
+    // Show the entire region on initial load.
+    map.fitBounds(bounds);
 
 
+    // The initial full-map view becomes our
+    // maximum zoom-out distance.
+    const minimumZoom = map.getZoom();
+
+    map.setMinZoom(minimumZoom);
+
+
+    // Restrict panning to Kanto.
+    map.setMaxBounds(bounds);
+
+
+</script>
+    
 </body>
 
 </html>
