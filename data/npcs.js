@@ -1,7 +1,8 @@
 const npcData = [
 
     {
-        name: "Professor Oak",
+        id: "kanto-pallet-town",
+        character: "Youngster ...",
         region: "Kanto",
         location: "Pallet Town",
         x: 509,
