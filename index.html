@@ -107,6 +107,18 @@
 
     // Restrict panning to Kanto.
     map.setMaxBounds(bounds);
+
+// TEST NPC:
+// Professor Oak - Pallet Town
+
+const oakMarker = L.marker([473, 509])
+    .addTo(map)
+    .bindPopup(
+        '<strong>Professor Oak</strong><br>' +
+        'Pallet Town<br>' +
+        'Kanto<br><br>' +
+        '<strong>Status:</strong> Available'
+    );        
         
 // TEMPORARY ORGANIZER TOOL:
 // Click anywhere on the map to display its coordinates.
