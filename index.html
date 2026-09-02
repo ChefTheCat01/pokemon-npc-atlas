@@ -53,6 +53,7 @@
         crossorigin="">
     </script>
 
+    <script src="data/npcs.js"></script>
 
     <script>
 
@@ -108,17 +109,23 @@
     // Restrict panning to Kanto.
     map.setMaxBounds(bounds);
 
-// TEST NPC:
-// Professor Oak - Pallet Town
+// Create a marker for every NPC in the NPC data file.
 
-const oakMarker = L.marker([473, 509])
-    .addTo(map)
-    .bindPopup(
-        '<strong>Professor Oak</strong><br>' +
-        'Pallet Town<br>' +
-        'Kanto<br><br>' +
-        '<strong>Status:</strong> Available'
-    );        
+npcData.forEach(function(npc) {
+
+    const marker = L.marker([
+        npc.y,
+        npc.x
+    ]).addTo(map);
+
+    marker.bindPopup(
+        '<strong>' + npc.name + '</strong><br>' +
+        npc.location + '<br>' +
+        npc.region + '<br><br>' +
+        '<strong>Status:</strong> ' + npc.status
+    );
+
+});
         
 // TEMPORARY ORGANIZER TOOL:
 // Click anywhere on the map to display its coordinates.
