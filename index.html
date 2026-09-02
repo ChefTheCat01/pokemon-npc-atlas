@@ -1,23 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Pokémon NPC Atlas</title>
+
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    />
+
+
+    <style>
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #map {
+            width: 100%;
+            height: 700px;
+            background: #d8d8d8;
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <h1>Pokémon NPC Atlas</h1>
 
-    <p>
-        Interactive character map for the Pokémon Writing Competition.
-    </p>
+    <!-- This is where Leaflet places the map -->
+    <div id="map"></div>
 
-    <p>
-        If you can see this, the atlas site is working.
-    </p>
+
+    <!-- Leaflet JavaScript -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="">
+    </script>
+
+
+    <script>
+
+        // Create a non-geographical Leaflet map.
+        // CRS.Simple lets us use fictional/game maps instead of Earth coordinates.
+
+        const map = L.map('map', {
+            crs: L.CRS.Simple,
+            minZoom: -3
+        });
+
+
+        // Temporary working area.
+        // We will replace this with an actual Pokémon region map later.
+
+        const bounds = [
+            [0, 0],
+            [1000, 1600]
+        ];
+
+
+        L.rectangle(bounds, {
+            color: '#666',
+            weight: 2,
+            fillColor: '#eeeeee',
+            fillOpacity: 1
+        }).addTo(map);
+
+
+        // Show the whole temporary map area.
+
+        map.fitBounds(bounds);
+
+
+    </script>
+
 
 </body>
+
 </html>
