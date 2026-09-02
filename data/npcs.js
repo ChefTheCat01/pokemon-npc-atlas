@@ -16,7 +16,7 @@ const npcData = [
         location: "Route 1",
         x: 521,
         y: 593,
-        status: "Reserved"
+        status: "Claimed"
     }
 
 ];
