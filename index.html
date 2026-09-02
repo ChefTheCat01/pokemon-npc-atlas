@@ -59,9 +59,19 @@
 
     // Create a non-geographical Leaflet map.
     const map = L.map('map', {
-        crs: L.CRS.Simple,
-        maxBoundsViscosity: 1.0
-    });
+    crs: L.CRS.Simple,
+
+    // Temporarily allow negative zoom levels so
+    // fitBounds can show the entire region.
+    minZoom: -3,
+
+    // Allow smoother fractional fitting.
+    zoomSnap: 0.1,
+    zoomDelta: 0.5,
+
+    // Keep the map inside its intended area.
+    maxBoundsViscosity: 1.0
+});
 
 
     // Kanto map dimensions:
