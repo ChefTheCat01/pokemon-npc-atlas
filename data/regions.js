@@ -10,6 +10,19 @@ const regionData = {
 
         height: 1448
 
+    },
+
+
+    Johto: {
+
+        name: "Johto",
+
+        image: "maps/johto.png",
+
+        width: 1961,
+
+        height: 1316
+
     }
 
 };
