@@ -494,7 +494,7 @@ function loadNpcData() {
 
 // Automatically check the Google Sheet
 // for changes once every 60 seconds.
-query.setRefreshInterval(60);
+query.setRefreshInterval(10);
 
 
 query.send(handleSheetResponse);
