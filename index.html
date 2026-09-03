@@ -300,6 +300,80 @@ regionControl.onAdd = function() {
 
 regionControl.addTo(map);
 
+        // Switch between Pokémon regions.
+
+function switchRegion(regionName) {
+
+    const region = regionData[regionName];
+
+    // Safety check in case an invalid region is requested.
+    if (!region) {
+        console.error('Unknown region:', regionName);
+        return;
+    }
+
+
+    // Build this region's coordinate bounds.
+    const newBounds = [
+        [0, 0],
+        [
+            region.height,
+            region.width
+        ]
+    ];
+
+
+    // Temporarily allow Leaflet to zoom far enough out
+    // to fit regions of different dimensions.
+    map.setMinZoom(-3);
+
+
+    // Change the existing image overlay.
+    regionMap.setUrl(region.image);
+    regionMap.setBounds(newBounds);
+
+
+    // Update the image alt text.
+    const imageElement = regionMap.getElement();
+
+    if (imageElement) {
+        imageElement.alt =
+            'Map of the ' + region.name + ' region';
+    }
+
+
+    // Apply the new movement boundary.
+    map.setMaxBounds(newBounds);
+
+
+    // Show the whole new region.
+    map.fitBounds(newBounds);
+
+
+    // Make this full-region view the new
+    // maximum zoom-out level.
+    const newMinimumZoom = map.getZoom();
+
+    map.setMinZoom(newMinimumZoom);
+
+
+    // Close any popup left open from the old region.
+    map.closePopup();
+
+}
+
+        // Listen for region changes.
+
+const regionSelect =
+    document.getElementById('region-select');
+
+
+regionSelect.addEventListener('change', function() {
+
+    switchRegion(this.value);
+
+});
+
         
 // Create a marker for every NPC in the NPC data file.
 
