@@ -23,6 +23,18 @@ const regionData = {
 
         height: 1316
 
+    },
+
+        Hoenn: {
+
+        name: "Hoenn",
+
+        image: "maps/hoenn.png",
+
+        width: 1250,
+
+        height: 884
+
     }
 
 };
