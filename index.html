@@ -281,11 +281,8 @@ regionControl.onAdd = function() {
 
 
     div.innerHTML =
-        '<label for="region-select">Region</label>' +
-        '<select id="region-select">' +
-            '<option value="Kanto">Kanto</option>' +
-            '<option value="Johto">Johto</option>' +
-        '</select>';
+    '<label for="region-select">Region</label>' +
+    '<select id="region-select"></select>';
 
 
     // Prevent interaction with the dropdown
@@ -299,6 +296,28 @@ regionControl.onAdd = function() {
 };
 
 regionControl.addTo(map);
+
+// Build the region dropdown automatically
+// from data/regions.js.
+
+const regionSelect =
+    document.getElementById('region-select');
+
+
+Object.entries(regionData).forEach(function(
+    [regionKey, region]
+) {
+
+    const option =
+        document.createElement('option');
+
+    option.value = regionKey;
+
+    option.textContent = region.name;
+
+    regionSelect.appendChild(option);
+
+});
 
         // Switch between Pokémon regions.
 
@@ -370,9 +389,6 @@ function switchRegion(regionName) {
 }
 
         // Listen for region changes.
-
-const regionSelect =
-    document.getElementById('region-select');
 
 
 regionSelect.addEventListener('change', function() {
