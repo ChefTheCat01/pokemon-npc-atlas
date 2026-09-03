@@ -36,6 +36,18 @@ const regionData = {
 
         height: 884
 
-    }
+    },
+
+    Sinnoh: {
+
+        name: "Sinnoh",
+
+        image: "maps/sinnoh.png",
+
+        width: 1024,
+
+        height: 724
+
+}
 
 };
