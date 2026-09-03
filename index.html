@@ -258,26 +258,6 @@ function createNpcMarkers(npcData) {
         });
 
 
-        const marker = L.marker(
-            [
-                npc.y,
-                npc.x
-            ],
-            {
-                icon: statusIcon
-            }
-        ).addTo(map);
-
-
-        marker.bindPopup(
-            '<strong>' + npc.character + '</strong><br>' +
-            npc.location + '<br>' +
-            npc.region + '<br><br>' +
-            '<strong>Status:</strong> ' + npc.status
-        );
-
-    });
-
 }
 
         // Load NPC data from Google Sheets.
@@ -366,25 +346,6 @@ function loadNpcData() {
 
 }
         
-    const marker = L.marker(
-        [
-            npc.y,
-            npc.x
-        ],
-        {
-            icon: statusIcon
-        }
-    ).addTo(map);
-
-
-    marker.bindPopup(
-        '<strong>' + npc.character + '</strong><br>' +
-        npc.location + '<br>' +
-        npc.region + '<br><br>' +
-        '<strong>Status:</strong> ' + npc.status
-    );
-
-});
         
 // TEMPORARY ORGANIZER TOOL:
 // Click anywhere on the map to display its coordinates.
