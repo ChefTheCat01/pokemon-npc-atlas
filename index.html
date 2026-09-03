@@ -11,6 +11,8 @@
 
 
     <!-- Leaflet CSS -->
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -136,7 +138,6 @@
         crossorigin="">
     </script>
 
-    <script src="data/npcs.js"></script>
 
     <script>
 
@@ -227,32 +228,144 @@ legend.addTo(map);
         
 // Create a marker for every NPC in the NPC data file.
 
-npcData.forEach(function(npc) {
+// Create all NPC markers from supplied data.
 
-    // Convert the status into a CSS class.
-    const statusClass =
-        'status-' + npc.status.toLowerCase();
+function createNpcMarkers(npcData) {
+
+    npcData.forEach(function(npc) {
+
+        // Convert the status into a CSS class.
+        const statusClass =
+            'status-' + npc.status.trim().toLowerCase();
 
 
-    // Create a custom marker coloured by status.
-    const statusIcon = L.divIcon({
+        // Create a custom marker coloured by status.
+        const statusIcon = L.divIcon({
 
-        className: 'status-marker',
+            className: 'status-marker',
 
-        html:
-            '<div class="status-pin ' +
-            statusClass +
-            '"></div>',
+            html:
+                '<div class="status-pin ' +
+                statusClass +
+                '"></div>',
 
-        iconSize: [28, 28],
+            iconSize: [28, 28],
 
-        iconAnchor: [14, 28],
+            iconAnchor: [14, 28],
 
-        popupAnchor: [0, -28]
+            popupAnchor: [0, -28]
+
+        });
+
+
+        const marker = L.marker(
+            [
+                npc.y,
+                npc.x
+            ],
+            {
+                icon: statusIcon
+            }
+        ).addTo(map);
+
+
+        marker.bindPopup(
+            '<strong>' + npc.character + '</strong><br>' +
+            npc.location + '<br>' +
+            npc.region + '<br><br>' +
+            '<strong>Status:</strong> ' + npc.status
+        );
 
     });
 
+}
 
+        // Load NPC data from Google Sheets.
+
+google.charts.load('current');
+
+google.charts.setOnLoadCallback(loadNpcData);
+
+
+function loadNpcData() {
+
+    const sheetUrl =
+        'https://docs.google.com/spreadsheets/d/1THddca69gjdWfcGbQGvLc85oWgkMU7pI-QwzbyAOW3E/gviz/tq?sheet=MapData&headers=1';
+
+
+    const query = new google.visualization.Query(
+        sheetUrl,
+        {
+            sendMethod: 'scriptInjection'
+        }
+    );
+
+
+    query.send(handleSheetResponse);
+
+}
+
+       function handleSheetResponse(response) {
+
+    // If Google returns an error, report it in the browser console.
+    if (response.isError()) {
+
+        console.error(
+            'Google Sheet error:',
+            response.getMessage(),
+            response.getDetailedMessage()
+        );
+
+        return;
+
+    }
+
+
+    // Retrieve the table returned by Google.
+    const data = response.getDataTable();
+
+
+    // Convert every spreadsheet row into an NPC object.
+    const npcData = [];
+
+
+    for (let row = 0; row < data.getNumberOfRows(); row++) {
+
+        const id = data.getValue(row, 0);
+
+
+        // Ignore completely blank rows.
+        if (!id) {
+            continue;
+        }
+
+
+        npcData.push({
+
+            id: String(data.getValue(row, 0) || ''),
+
+            character: String(data.getValue(row, 1) || ''),
+
+            region: String(data.getValue(row, 2) || ''),
+
+            location: String(data.getValue(row, 3) || ''),
+
+            x: Number(data.getValue(row, 4)),
+
+            y: Number(data.getValue(row, 5)),
+
+            status: String(data.getValue(row, 6) || 'Available')
+
+        });
+
+    }
+
+
+    // Hand the finished dataset to Leaflet.
+    createNpcMarkers(npcData);
+
+}
+        
     const marker = L.marker(
         [
             npc.y,
