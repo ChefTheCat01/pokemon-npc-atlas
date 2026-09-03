@@ -282,10 +282,11 @@ regionControl.onAdd = function() {
 
     div.innerHTML =
         '<label for="region-select">Region</label>' +
-       <select id="region-select">
-    <option value="Kanto">Kanto</option>
-    <option value="Johto">Johto</option>
-</select>
+        '<select id="region-select">' +
+            '<option value="Kanto">Kanto</option>' +
+            '<option value="Johto">Johto</option>' +
+        '</select>';
+
 
     // Prevent interaction with the dropdown
     // from also affecting the map.
@@ -296,7 +297,6 @@ regionControl.onAdd = function() {
     return div;
 
 };
-
 
 regionControl.addTo(map);
 
