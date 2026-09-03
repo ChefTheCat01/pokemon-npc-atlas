@@ -503,63 +503,6 @@ function switchRegion(regionName) {
 
 }
 
-
-    // Build this region's coordinate bounds.
-    const newBounds = [
-        [0, 0],
-        [
-            region.height,
-            region.width
-        ]
-    ];
-
-
-    // Temporarily allow Leaflet to zoom far enough out
-    // to fit regions of different dimensions.
-    map.setMinZoom(-3);
-
-
-    // Change the existing image overlay.
-    regionMap.setUrl(region.image);
-    regionMap.setBounds(newBounds);
-
-
-    // Update the image alt text.
-    const imageElement = regionMap.getElement();
-
-    if (imageElement) {
-        imageElement.alt =
-            'Map of the ' + region.name + ' region';
-    }
-
-
-    // Apply the new movement boundary.
-    map.setMaxBounds(newBounds);
-
-
-    // Show the whole new region.
-    map.fitBounds(newBounds);
-
-
-    // Make this full-region view the new
-    // maximum zoom-out level.
-    const newMinimumZoom = map.getZoom();
-
-    map.setMinZoom(newMinimumZoom);
-
-
-    // Close any popup left open from the old region.
-    map.closePopup();
-
-
-    // Refresh NPC markers for the selected region.
-    createNpcMarkers(
-        allNpcData,
-        regionName
-    );
-
-}
-
         // Listen for region changes.
 
 
@@ -570,13 +513,6 @@ regionSelect.addEventListener('change', function() {
     
 });
 
-        /* Smooth region image transition */
-
-.region-map-image {
-    transition: opacity 0.25s ease-in-out;
-}
-
-        
         
 // ======================================================
 // QUICK LINKS
@@ -646,6 +582,12 @@ quickLinksControl.onAdd = function() {
 
         icon.className =
             'quick-link-icon';
+
+        /* Smooth region image transition */
+
+.region-map-image {
+    transition: opacity 0.25s ease-in-out;
+}
 
 
         // Image support is already built in.
