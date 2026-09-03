@@ -310,6 +310,12 @@ function switchRegion(regionName) {
     if (!region) {
         console.error('Unknown region:', regionName);
         return;
+    // Refresh NPC markers for this region.
+createNpcMarkers(
+    allNpcData,
+    regionName
+);
+    
     }
 
 
@@ -374,21 +380,36 @@ regionSelect.addEventListener('change', function() {
 
 });
 
+
+        // Layer group containing all visible NPC markers.
+
+const npcMarkerLayer = L.layerGroup().addTo(map);
         
 // Create a marker for every NPC in the NPC data file.
 
 // Create all NPC markers from supplied data.
 
-function createNpcMarkers(npcData) {
+function createNpcMarkers(npcData, regionName) {
 
-    npcData.forEach(function(npc) {
+    // Remove markers from the previously displayed region.
+    npcMarkerLayer.clearLayers();
 
-        // Convert the status into a CSS class.
+
+    // Only keep NPCs belonging to the selected region.
+    const regionNpcs = npcData.filter(function(npc) {
+
+        return npc.region.trim().toLowerCase() ===
+               regionName.trim().toLowerCase();
+
+    });
+
+
+    regionNpcs.forEach(function(npc) {
+
         const statusClass =
             'status-' + npc.status.trim().toLowerCase();
 
 
-        // Create a custom marker coloured by status.
         const statusIcon = L.divIcon({
 
             className: 'status-marker',
@@ -407,7 +428,6 @@ function createNpcMarkers(npcData) {
         });
 
 
-        // Create the Leaflet marker.
         const marker = L.marker(
             [
                 npc.y,
@@ -416,10 +436,9 @@ function createNpcMarkers(npcData) {
             {
                 icon: statusIcon
             }
-        ).addTo(map);
+        );
 
 
-        // Add the NPC popup.
         marker.bindPopup(
             '<strong>' + npc.character + '</strong><br>' +
             npc.location + '<br>' +
@@ -427,10 +446,14 @@ function createNpcMarkers(npcData) {
             '<strong>Status:</strong> ' + npc.status
         );
 
+
+        // Add the marker to the NPC group,
+        // rather than directly to the map.
+        marker.addTo(npcMarkerLayer);
+
     });
 
 }
-
         // Load NPC data from Google Sheets.
 
 google.charts.load('current');
@@ -456,6 +479,10 @@ function loadNpcData() {
 
 }
 
+        // Stores the full NPC dataset from Google Sheets.
+
+let allNpcData = [];
+        
        function handleSheetResponse(response) {
 
     // If Google returns an error, report it in the browser console.
@@ -512,8 +539,15 @@ function loadNpcData() {
     }
 
 
-    // Hand the finished dataset to Leaflet.
-    createNpcMarkers(npcData);
+   // Store the complete dataset.
+allNpcData = npcData;
+
+
+// Display NPCs for the currently selected region.
+createNpcMarkers(
+    allNpcData,
+    document.getElementById('region-select').value
+);
 
 }
         
