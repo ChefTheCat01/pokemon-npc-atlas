@@ -264,7 +264,9 @@ const regionMap = L.imageOverlay(
     startingRegion.image,
     bounds,
     {
-        alt: 'Map of the ' + startingRegion.name + ' region'
+        alt: 'Map of the ' + startingRegion.name + ' region',
+        opacity: 1,
+        className: 'region-map-image'
     }
 ).addTo(map);
 
@@ -372,15 +374,134 @@ Object.entries(regionData).forEach(function(
 
         // Switch between Pokémon regions.
 
+let regionSwitchToken = 0;
+
+
 function switchRegion(regionName) {
 
     const region = regionData[regionName];
 
-    // Safety check in case an invalid region is requested.
     if (!region) {
         console.error('Unknown region:', regionName);
         return;
     }
+
+
+    // Prevent rapid region switching from allowing an
+    // older image load to finish after a newer selection.
+    const thisSwitch =
+        ++regionSwitchToken;
+
+
+    const newBounds = [
+        [0, 0],
+        [
+            region.height,
+            region.width
+        ]
+    ];
+
+
+    // Close anything left open on the previous region.
+    map.closePopup();
+
+
+    // Remove the previous region's NPCs immediately.
+    npcMarkerLayer.clearLayers();
+
+
+    // Fade the current region out.
+    regionMap.setOpacity(0);
+
+
+    // Give the fade-out a moment to complete.
+    setTimeout(function() {
+
+        // Ignore this switch if the user has already
+        // selected another region.
+        if (thisSwitch !== regionSwitchToken) {
+            return;
+        }
+
+
+        // Temporarily relax the zoom limit while
+        // fitting the new region.
+        map.setMinZoom(-3);
+
+
+        // Change the coordinate area first.
+        regionMap.setBounds(newBounds);
+
+
+        // When the new artwork finishes loading,
+        // fade it in and add the correct NPC markers.
+        regionMap.once('load', function() {
+
+            if (thisSwitch !== regionSwitchToken) {
+                return;
+            }
+
+
+            regionMap.setOpacity(1);
+
+
+            createNpcMarkers(
+                allNpcData,
+                regionName
+            );
+
+        });
+
+
+        // Load the new map artwork.
+        regionMap.setUrl(
+            region.image
+        );
+
+
+        // Update accessibility text.
+        const imageElement =
+            regionMap.getElement();
+
+        if (imageElement) {
+
+            imageElement.alt =
+                'Map of the ' +
+                region.name +
+                ' region';
+
+        }
+
+
+        // Apply the new navigation boundary.
+        map.setMaxBounds(
+            newBounds
+        );
+
+
+        // Re-centre the map while the artwork
+        // is still faded out.
+        map.fitBounds(
+            newBounds,
+            {
+                animate: false
+            }
+        );
+
+
+        // The full-map view becomes the new
+        // maximum zoom-out level.
+        const newMinimumZoom =
+            map.getZoom();
+
+        map.setMinZoom(
+            newMinimumZoom
+        );
+
+
+    }, 250);
+
+}
 
 
     // Build this region's coordinate bounds.
@@ -447,9 +568,17 @@ regionSelect.addEventListener('change', function() {
     switchRegion(this.value);
 
     
-
 });
-        // ======================================================
+
+        /* Smooth region image transition */
+
+.region-map-image {
+    transition: opacity 0.25s ease-in-out;
+}
+
+        
+        
+// ======================================================
 // QUICK LINKS
 // ======================================================
 
