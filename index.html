@@ -570,24 +570,59 @@ createNpcMarkers(
         
         
 // TEMPORARY ORGANIZER TOOL:
-// Click anywhere on the map to display its coordinates.
+// Click anywhere on the map to display and copy its coordinates.
 
 map.on('click', function(e) {
 
     const x = Math.round(e.latlng.lng);
     const y = Math.round(e.latlng.lat);
 
+    const currentRegion =
+        document.getElementById('region-select').value;
+
     L.popup()
         .setLatLng(e.latlng)
         .setContent(
-            '<strong>Map coordinates</strong><br>' +
+            '<strong>' + currentRegion + ' coordinates</strong><br>' +
             'X: ' + x + '<br>' +
-            'Y: ' + y
+            'Y: ' + y + '<br><br>' +
+            '<button onclick="copyCoordinates(' +
+            x + ',' + y +
+            ')">Copy X & Y</button>'
         )
         .openOn(map);
 
-});  
+});
 
+        async function copyCoordinates(x, y) {
+
+    // A tab between the values makes them paste
+    // into two adjacent Google Sheets cells.
+    const coordinateText =
+        x + '\t' + y;
+
+    try {
+
+        await navigator.clipboard.writeText(
+            coordinateText
+        );
+
+        console.log(
+            'Coordinates copied:',
+            x,
+            y
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Could not copy coordinates:',
+            error
+        );
+
+    }
+
+}
 
 </script>
     
