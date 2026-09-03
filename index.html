@@ -532,31 +532,47 @@ let allNpcData = [];
     for (let row = 0; row < data.getNumberOfRows(); row++) {
 
         const id = data.getValue(row, 0);
+const character = data.getValue(row, 1);
+const region = data.getValue(row, 2);
+const location = data.getValue(row, 3);
+const x = data.getValue(row, 4);
+const y = data.getValue(row, 5);
+const status = data.getValue(row, 6);
 
 
-        // Ignore completely blank rows.
-        if (!id) {
-            continue;
-        }
+// Ignore incomplete rows.
+// This lets organizers safely work on new entries
+// without half-finished markers appearing on the live map.
+if (
+    !id ||
+    !character ||
+    !region ||
+    !location ||
+    x === null ||
+    y === null ||
+    !status
+) {
+    continue;
+}
 
 
         npcData.push({
 
-            id: String(data.getValue(row, 0) || ''),
+    id: String(id),
 
-            character: String(data.getValue(row, 1) || ''),
+    character: String(character),
 
-            region: String(data.getValue(row, 2) || ''),
+    region: String(region),
 
-            location: String(data.getValue(row, 3) || ''),
+    location: String(location),
 
-            x: Number(data.getValue(row, 4)),
+    x: Number(x),
 
-            y: Number(data.getValue(row, 5)),
+    y: Number(y),
 
-            status: String(data.getValue(row, 6) || 'Available')
+    status: String(status)
 
-        });
+});
 
     }
 
