@@ -137,6 +137,8 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin="">
     </script>
+    
+    <script src="data/regions.js"></script>
 
 
     <script>
@@ -159,24 +161,28 @@
 });
 
 
-    // Kanto map dimensions:
-    // Width:  2048 pixels
-    // Height: 1448 pixels
-
-    const bounds = [
-        [0, 0],
-        [1448, 2048]
-    ];
+    // Choose the starting region.
+const startingRegion = regionData.Kanto;
 
 
-    // Place the Kanto image onto the Leaflet map.
-    const kantoMap = L.imageOverlay(
-        'maps/kanto.png',
-        bounds,
-        {
-            alt: 'Map of the Kanto region'
-        }
-    ).addTo(map);
+// Build the Leaflet bounds from the region data.
+const bounds = [
+    [0, 0],
+    [
+        startingRegion.height,
+        startingRegion.width
+    ]
+];
+
+
+// Place the region image onto the Leaflet map.
+const regionMap = L.imageOverlay(
+    startingRegion.image,
+    bounds,
+    {
+        alt: 'Map of the ' + startingRegion.name + ' region'
+    }
+).addTo(map);
 
 
     // Show the entire region on initial load.
