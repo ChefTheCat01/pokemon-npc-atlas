@@ -153,6 +153,57 @@
     background: white;
 }
 
+        /* Quick links */
+
+.quick-links-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    font-family: Arial, sans-serif;
+}
+
+.quick-link-button {
+    display: flex;
+    align-items: center;
+
+    min-width: 150px;
+
+    padding: 7px 10px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    border-radius: 6px;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+
+    color: #222;
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.quick-link-button:hover {
+    background: white;
+}
+
+
+/* Reserved space for button images/logos */
+
+.quick-link-icon {
+    width: 22px;
+    height: 22px;
+
+    margin-right: 8px;
+
+    flex-shrink: 0;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
     </style>
 
 </head>
@@ -395,7 +446,121 @@ regionSelect.addEventListener('change', function() {
 
     switchRegion(this.value);
 
+    
+
 });
+        // ======================================================
+// QUICK LINKS
+// ======================================================
+
+const quickLinks = [
+
+    {
+        label: 'https://docs.google.com/spreadsheets/d/1WVZe7i43qbm__nk4wAFrn_zvUP0hcig7OcROO0Dk858/edit?gid=0#gid=0',
+        url: 'PASTE_CLAIM_BOARD_LINK_HERE',
+        icon: ''
+    },
+
+    {
+        label: 'PS! The Library',
+        url: 'http://play.pokemonshowdown.com/thelibrary',
+        icon: ''
+    },
+
+    {
+        label: 'Wifi Room',
+        url: 'http://play.pokemonshowdown.com/wifi',
+        icon: ''
+    },
+
+    {
+        label: 'Event Info',
+        url: 'https://docs.google.com/document/d/1ZwwVcfhvTrCddq6zZDEvea0Km_aK0dDLQOhB8YiEi3c/edit?tab=t.0',
+        icon: ''
+    }
+
+];
+
+        const quickLinksControl = L.control({
+    position: 'topright'
+});
+
+
+quickLinksControl.onAdd = function() {
+
+    const container = L.DomUtil.create(
+        'div',
+        'quick-links-control'
+    );
+
+
+    quickLinks.forEach(function(link) {
+
+        const button =
+            document.createElement('a');
+
+        button.className =
+            'quick-link-button';
+
+        button.href =
+            link.url;
+
+        button.target =
+            '_blank';
+
+        button.rel =
+            'noopener noreferrer';
+
+
+        const icon =
+            document.createElement('span');
+
+        icon.className =
+            'quick-link-icon';
+
+
+        // Image support is already built in.
+        // We'll supply the actual images later.
+        if (link.icon) {
+
+            icon.style.backgroundImage =
+                'url("' + link.icon + '")';
+
+        }
+
+
+        const label =
+            document.createElement('span');
+
+        label.textContent =
+            link.label;
+
+
+        button.appendChild(icon);
+        button.appendChild(label);
+
+        container.appendChild(button);
+
+    });
+
+
+    // Don't let button interaction drag,
+    // zoom or click through to the map.
+    L.DomEvent.disableClickPropagation(
+        container
+    );
+
+    L.DomEvent.disableScrollPropagation(
+        container
+    );
+
+
+    return container;
+
+};
+
+
+quickLinksControl.addTo(map);
 
 
         // Layer group containing all visible NPC markers.
