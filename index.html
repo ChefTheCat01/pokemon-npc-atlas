@@ -118,7 +118,40 @@
 
 .legend-claimed {
     background: #d64545;
-}      
+}   
+
+        /* Region selector */
+
+.region-control {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 10px;
+
+    border-radius: 6px;
+
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+}
+
+.region-control label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.region-control select {
+    min-width: 130px;
+
+    padding: 5px 7px;
+
+    font-size: 13px;
+
+    border: 1px solid #aaa;
+    border-radius: 4px;
+
+    background: white;
+}
 
     </style>
 
@@ -231,6 +264,42 @@ legend.onAdd = function() {
 
 
 legend.addTo(map);
+        
+        // Region selector
+
+const regionControl = L.control({
+    position: 'topright'
+});
+
+
+regionControl.onAdd = function() {
+
+    const div = L.DomUtil.create(
+        'div',
+        'region-control'
+    );
+
+
+    div.innerHTML =
+        '<label for="region-select">Region</label>' +
+        '<select id="region-select">' +
+            '<option value="Kanto">Kanto</option>' +
+        '</select>';
+
+
+    // Prevent interaction with the dropdown
+    // from also affecting the map.
+    L.DomEvent.disableClickPropagation(div);
+    L.DomEvent.disableScrollPropagation(div);
+
+
+    return div;
+
+};
+
+
+regionControl.addTo(map);
+
         
 // Create a marker for every NPC in the NPC data file.
 
