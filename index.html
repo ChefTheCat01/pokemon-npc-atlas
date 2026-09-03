@@ -310,12 +310,6 @@ function switchRegion(regionName) {
     if (!region) {
         console.error('Unknown region:', regionName);
         return;
-    // Refresh NPC markers for this region.
-createNpcMarkers(
-    allNpcData,
-    regionName
-);
-    
     }
 
 
@@ -365,6 +359,13 @@ createNpcMarkers(
 
     // Close any popup left open from the old region.
     map.closePopup();
+
+
+    // Refresh NPC markers for the selected region.
+    createNpcMarkers(
+        allNpcData,
+        regionName
+    );
 
 }
 
