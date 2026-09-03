@@ -25,7 +25,8 @@ const regionData = {
 
     },
 
-        Hoenn: {
+
+    Hoenn: {
 
         name: "Hoenn",
 
