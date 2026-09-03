@@ -2,7 +2,7 @@ const regionData = {
 
     Kanto: {
         name: "Kanto",
-        image: "maps/kanto.png",
+        image: "maps/kanto.png?v=2",
         width: 1280,
         height: 976
     },
