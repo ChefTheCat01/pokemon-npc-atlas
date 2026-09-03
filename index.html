@@ -258,6 +258,28 @@ function createNpcMarkers(npcData) {
         });
 
 
+        // Create the Leaflet marker.
+        const marker = L.marker(
+            [
+                npc.y,
+                npc.x
+            ],
+            {
+                icon: statusIcon
+            }
+        ).addTo(map);
+
+
+        // Add the NPC popup.
+        marker.bindPopup(
+            '<strong>' + npc.character + '</strong><br>' +
+            npc.location + '<br>' +
+            npc.region + '<br><br>' +
+            '<strong>Status:</strong> ' + npc.status
+        );
+
+    });
+
 }
 
         // Load NPC data from Google Sheets.
