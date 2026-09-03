@@ -423,8 +423,13 @@ function createNpcMarkers(npcData, regionName) {
 
     regionNpcs.forEach(function(npc) {
 
-        const statusClass =
-            'status-' + npc.status.trim().toLowerCase();
+        const effectiveStatus =
+    getEffectiveStatus(npc);
+
+
+const statusClass =
+    'status-' +
+    effectiveStatus.trim().toLowerCase();
 
 
         const statusIcon = L.divIcon({
@@ -460,7 +465,7 @@ function createNpcMarkers(npcData, regionName) {
             '<strong>' + npc.character + '</strong><br>' +
             npc.location + '<br>' +
             npc.region + '<br><br>' +
-            '<strong>Status:</strong> ' + npc.status
+            '<strong>Status:</strong> ' + effectiveStatus
         );
 
 
@@ -475,13 +480,17 @@ function createNpcMarkers(npcData, regionName) {
 
 google.charts.load('current');
 
-google.charts.setOnLoadCallback(loadNpcData);
+google.charts.setOnLoadCallback(function() {
 
+    loadNpcData();
+    loadClaimData();
+
+});
 
 function loadNpcData() {
 
     const sheetUrl =
-        'https://docs.google.com/spreadsheets/d/1THddca69gjdWfcGbQGvLc85oWgkMU7pI-QwzbyAOW3E/gviz/tq?sheet=MapData&headers=1';
+        'https://docs.google.com/spreadsheets/d/1WVZe7i43qbm__nk4wAFrn_zvUP0hcig7OcROO0Dk858/gviz/tq?sheet=MapData&headers=1';
 
 
    const query = new google.visualization.Query(
@@ -501,9 +510,88 @@ query.send(handleSheetResponse);
 
 }
 
+        function handleClaimResponse(response) {
+
+    if (response.isError()) {
+
+        console.error(
+            'Claim Board error:',
+            response.getMessage(),
+            response.getDetailedMessage()
+        );
+
+        return;
+
+    }
+
+
+    const data =
+        response.getDataTable();
+
+
+    const claimData = [];
+
+
+    for (
+        let row = 0;
+        row < data.getNumberOfRows();
+        row++
+    ) {
+
+        const id =
+            data.getValue(row, 0);
+
+
+        // Ignore blank rows.
+        if (!id) {
+            continue;
+        }
+
+
+        claimData.push({
+
+            id:
+                String(
+                    data.getValue(row, 0) || ''
+                ),
+
+            reservedBy:
+                String(
+                    data.getValue(row, 4) || ''
+                ),
+
+            decision:
+                String(
+                    data.getValue(row, 5) || ''
+                )
+
+        });
+
+    }
+
+
+    allClaimData = claimData;
+
+
+    // Rebuild the currently visible region
+    // using the latest reservation data.
+    if (allNpcData.length > 0) {
+
+        createNpcMarkers(
+            allNpcData,
+            document.getElementById(
+                'region-select'
+            ).value
+        );
+
+    }
+
+}
+
         // Stores the full NPC dataset from Google Sheets.
 
 let allNpcData = [];
+let allClaimData = [];
         
        function handleSheetResponse(response) {
 
@@ -580,7 +668,51 @@ if (
    // Store the complete dataset.
 allNpcData = npcData;
 
+function getEffectiveStatus(npc) {
 
+    const claim = allClaimData.find(function(entry) {
+        return entry.id === npc.id;
+    });
+
+
+    // No matching Claim Board row:
+    // use the normal Atlas Data status.
+    if (!claim) {
+        return npc.status;
+    }
+
+
+    const reservedBy =
+        claim.reservedBy.trim();
+
+    const decision =
+        claim.decision.trim().toLowerCase();
+
+
+    // Organizer approved the reservation.
+    if (decision === 'approved') {
+        return 'Claimed';
+    }
+
+
+    // Organizer declined the reservation.
+    if (decision === 'declined') {
+        return 'Available';
+    }
+
+
+    // Somebody has entered a username and
+    // the reservation is awaiting review.
+    if (reservedBy !== '') {
+        return 'Reserved';
+    }
+
+
+    // Otherwise fall back to Atlas Data.
+    return npc.status;
+
+}
+           
 // Display NPCs for the currently selected region.
 createNpcMarkers(
     allNpcData,
