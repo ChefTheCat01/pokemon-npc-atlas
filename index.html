@@ -484,15 +484,20 @@ function loadNpcData() {
         'https://docs.google.com/spreadsheets/d/1THddca69gjdWfcGbQGvLc85oWgkMU7pI-QwzbyAOW3E/gviz/tq?sheet=MapData&headers=1';
 
 
-    const query = new google.visualization.Query(
-        sheetUrl,
-        {
-            sendMethod: 'scriptInjection'
-        }
-    );
+   const query = new google.visualization.Query(
+    sheetUrl,
+    {
+        sendMethod: 'scriptInjection'
+    }
+);
 
 
-    query.send(handleSheetResponse);
+// Automatically check the Google Sheet
+// for changes once every 60 seconds.
+query.setRefreshInterval(60);
+
+
+query.send(handleSheetResponse);
 
 }
 
