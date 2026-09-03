@@ -204,6 +204,12 @@
     background-repeat: no-repeat;
 }
 
+     /* Smooth region image transition */
+
+.region-map-image {
+    transition: opacity 0.25s ease-in-out;
+}   
+
     </style>
 
 </head>
@@ -582,12 +588,6 @@ quickLinksControl.onAdd = function() {
 
         icon.className =
             'quick-link-icon';
-
-        /* Smooth region image transition */
-
-.region-map-image {
-    transition: opacity 0.25s ease-in-out;
-}
 
 
         // Image support is already built in.
