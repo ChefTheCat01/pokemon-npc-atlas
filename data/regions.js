@@ -3,8 +3,8 @@ const regionData = {
     Kanto: {
         name: "Kanto",
         image: "maps/kanto.png",
-        width: 2048,
-        height: 1448
+        width: 1280,
+        height: 976
     },
 
     Johto: {
@@ -26,6 +26,48 @@ const regionData = {
         image: "maps/sinnoh.png",
         width: 1024,
         height: 724
+    },
+
+    Unova: {
+        name: "Unova",
+        image: "maps/unova.png",
+        width: 1280,
+        height: 837
+    },
+
+    Kalos: {
+        name: "Kalos",
+        image: "maps/kalos.png",
+        width: 1032,
+        height: 676
+    },
+
+    Alola: {
+        name: "Alola",
+        image: "maps/alola.png",
+        width: 1280,
+        height: 905
+    },
+
+    Paldea: {
+        name: "Paldea",
+        image: "maps/paldea.png",
+        width: 1280,
+        height: 905
+    },
+
+    Hisui: {
+        name: "Hisui",
+        image: "maps/hisui.png",
+        width: 1280,
+        height: 711
+    },
+
+    Galar: {
+        name: "Galar",
+        image: "maps/galar.png",
+        width: 800,
+        height: 1132
     }
 
 };
