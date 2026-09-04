@@ -687,14 +687,15 @@ const statusClass =
 
 
         const marker = L.marker(
-            [
-                npc.y,
-                npc.x
-            ],
-            {
-                icon: statusIcon
-            }
-        );
+    [
+        npc.y,
+        npc.x
+    ],
+    {
+        icon: statusIcon,
+        bubblingMouseEvents: false
+    }
+);
 
 
         marker.bindPopup(
@@ -1013,15 +1014,25 @@ function handleClaimResponse(response) {
         
 // ======================================================
 // ORGANIZER COORDINATE TOOL
-// Only enabled when the atlas is opened directly.
-// Hidden when embedded inside The Library website.
+// Available only on the direct GitHub/admin atlas.
+// Hidden on the public Library version.
 // ======================================================
 
-const isStandaloneAtlas =
-    window.self === window.top;
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+const isEmbedded =
+    window.self !== window.top;
+
+const isPublicView =
+    urlParams.get('view') === 'public' ||
+    isEmbedded;
 
 
-if (isStandaloneAtlas) {
+// Only enable coordinates on the direct
+// standalone GitHub version.
+
+if (!isPublicView) {
 
     map.on('click', function(e) {
 
