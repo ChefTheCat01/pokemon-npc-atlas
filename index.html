@@ -75,6 +75,39 @@
     background: #d64545;
 }
 
+        /* Example NPC */
+.status-example {
+    background: #9b51e0;
+}
+
+
+/* Example dialogue */
+
+.example-dialogue {
+    margin-top: 10px;
+    padding-top: 8px;
+
+    border-top: 1px solid #ddd;
+
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.example-label {
+    display: inline-block;
+
+    margin-top: 8px;
+    padding: 2px 6px;
+
+    border-radius: 4px;
+
+    background: #9b51e0;
+    color: white;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
   /* Map legend */
 
 .map-legend {
@@ -315,7 +348,10 @@ legend.onAdd = function() {
         'Reserved<br>' +
 
         '<span class="legend-dot legend-claimed"></span>' +
-        'Claimed';
+'Claimed<br>' +
+
+'<span class="legend-dot" style="background:#9b51e0;"></span>' +
+'Example';
 
     return div;
 
@@ -642,7 +678,22 @@ const npcMarkerLayer = L.layerGroup().addTo(map);
 
 // Create all NPC markers from supplied data.
 
-function createNpcMarkers(npcData, regionName) {
+function formatPopupText(text) {
+
+    const div =
+        document.createElement('div');
+
+    div.textContent =
+        text || '';
+
+    return div.innerHTML.replace(
+        /\n/g,
+        '<br>'
+    );
+
+}
+        
+        function createNpcMarkers(npcData, regionName) {
 
     // Remove markers from the previously displayed region.
     npcMarkerLayer.clearLayers();
@@ -663,9 +714,14 @@ function createNpcMarkers(npcData, regionName) {
     getEffectiveStatus(npc);
 
 
+// Example NPCs visually override
+// the normal claim-board colours.
+
 const statusClass =
-    'status-' +
-    effectiveStatus.trim().toLowerCase();
+    npc.example
+        ? 'status-example'
+        : 'status-' +
+          effectiveStatus.trim().toLowerCase();
 
 
         const statusIcon = L.divIcon({
@@ -698,12 +754,54 @@ const statusClass =
 );
 
 
-        marker.bindPopup(
-            '<strong>' + npc.character + '</strong><br>' +
-            npc.location + '<br>' +
-            npc.region + '<br><br>' +
-            '<strong>Status:</strong> ' + effectiveStatus
-        );
+       let popupContent =
+    '<strong>' +
+    formatPopupText(npc.character) +
+    '</strong><br>' +
+
+    formatPopupText(npc.location) +
+    '<br>' +
+
+    formatPopupText(npc.region);
+
+
+if (npc.example) {
+
+    popupContent +=
+        '<br>' +
+        '<span class="example-label">' +
+        'WRITING EXAMPLE' +
+        '</span>';
+
+
+    if (npc.dialogue) {
+
+        popupContent +=
+            '<div class="example-dialogue">' +
+            '“' +
+            formatPopupText(npc.dialogue) +
+            '”' +
+            '</div>';
+
+    }
+
+} else {
+
+    popupContent +=
+        '<br><br>' +
+        '<strong>Status:</strong> ' +
+        formatPopupText(effectiveStatus);
+
+}
+
+
+marker.bindPopup(
+    popupContent,
+    {
+        maxWidth: 340,
+        maxHeight: 260
+    }
+);
 
 
         // Add the marker to the NPC group,
@@ -863,6 +961,12 @@ function handleSheetResponse(response) {
         const status =
             data.getValue(row, 6);
 
+        const dialogue =
+            data.getValue(row, 7);
+
+        const exampleValue =
+            data.getValue(row, 8);
+
 
         // Ignore unfinished rows.
         if (
@@ -892,7 +996,14 @@ function handleSheetResponse(response) {
 
             y: Number(y),
 
-            status: String(status)
+            status: String(status),
+
+dialogue:
+    String(dialogue || ''),
+
+example:
+    exampleValue === true ||
+    String(exampleValue).toLowerCase() === 'true'
 
         });
 
