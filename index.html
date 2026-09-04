@@ -1011,30 +1011,51 @@ function handleClaimResponse(response) {
 }
         
         
-// TEMPORARY ORGANIZER TOOL:
-// Click anywhere on the map to display and copy its coordinates.
+// ======================================================
+// ORGANIZER COORDINATE TOOL
+// Only enabled when the atlas is opened directly.
+// Hidden when embedded inside The Library website.
+// ======================================================
 
-map.on('click', function(e) {
+const isStandaloneAtlas =
+    window.self === window.top;
 
-    const x = Math.round(e.latlng.lng);
-    const y = Math.round(e.latlng.lat);
 
-    const currentRegion =
-        document.getElementById('region-select').value;
+if (isStandaloneAtlas) {
 
-    L.popup()
-        .setLatLng(e.latlng)
-        .setContent(
-            '<strong>' + currentRegion + ' coordinates</strong><br>' +
-            'X: ' + x + '<br>' +
-            'Y: ' + y + '<br><br>' +
-            '<button onclick="copyCoordinates(' +
-            x + ',' + y +
-            ')">Copy X & Y</button>'
-        )
-        .openOn(map);
+    map.on('click', function(e) {
 
-});
+        const x =
+            Math.round(e.latlng.lng);
+
+        const y =
+            Math.round(e.latlng.lat);
+
+        const currentRegion =
+            document.getElementById(
+                'region-select'
+            ).value;
+
+
+        L.popup()
+            .setLatLng(e.latlng)
+            .setContent(
+                '<strong>' +
+                currentRegion +
+                ' coordinates</strong><br>' +
+
+                'X: ' + x + '<br>' +
+                'Y: ' + y + '<br><br>' +
+
+                '<button onclick="copyCoordinates(' +
+                x + ',' + y +
+                ')">Copy X & Y</button>'
+            )
+            .openOn(map);
+
+    });
+
+}
 
         async function copyCoordinates(x, y) {
 
