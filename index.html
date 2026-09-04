@@ -692,6 +692,24 @@ function formatPopupText(text) {
     );
 
 }
+
+        function getNpcDisplayName(npc) {
+
+    const character =
+        (npc.character || '').trim();
+
+    const npcName =
+        (npc.npcName || '').trim();
+
+
+    if (npcName) {
+        return character + ' ' + npcName;
+    }
+
+
+    return character;
+
+}
         
         function createNpcMarkers(npcData, regionName) {
 
@@ -754,19 +772,17 @@ const statusClass =
 );
 
 
-       let popupContent =
-   '<strong>' +
-formatPopupText(
-    getNpcDisplayName(npc)
-) +
-'</strong><br>'
+      let popupContent =
+    '<strong>' +
+    formatPopupText(
+        getNpcDisplayName(npc)
+    ) +
     '</strong><br>' +
 
     formatPopupText(npc.location) +
     '<br>' +
 
     formatPopupText(npc.region);
-
 
 if (npc.example) {
 
@@ -1020,24 +1036,6 @@ const exampleValue =
 
 
     allNpcData = npcData;
-
-function getNpcDisplayName(npc) {
-
-    const character =
-        (npc.character || '').trim();
-
-    const npcName =
-        (npc.npcName || '').trim();
-
-
-    if (npcName) {
-        return character + ' ' + npcName;
-    }
-
-
-    return character;
-
-}
 
     
     createNpcMarkers(
