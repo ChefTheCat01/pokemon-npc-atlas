@@ -755,8 +755,11 @@ const statusClass =
 
 
        let popupContent =
-    '<strong>' +
-    formatPopupText(npc.character) +
+   '<strong>' +
+formatPopupText(
+    getNpcDisplayName(npc)
+) +
+'</strong><br>'
     '</strong><br>' +
 
     formatPopupText(npc.location) +
@@ -941,31 +944,34 @@ function handleSheetResponse(response) {
     ) {
 
         const id =
-            data.getValue(row, 0);
+    data.getValue(row, 0);
 
-        const character =
-            data.getValue(row, 1);
+const character =
+    data.getValue(row, 1);
 
-        const region =
-            data.getValue(row, 2);
+const npcName =
+    data.getValue(row, 2);
 
-        const location =
-            data.getValue(row, 3);
+const region =
+    data.getValue(row, 3);
 
-        const x =
-            data.getValue(row, 4);
+const location =
+    data.getValue(row, 4);
 
-        const y =
-            data.getValue(row, 5);
+const x =
+    data.getValue(row, 5);
 
-        const status =
-            data.getValue(row, 6);
+const y =
+    data.getValue(row, 6);
 
-        const dialogue =
-            data.getValue(row, 7);
+const status =
+    data.getValue(row, 7);
 
-        const exampleValue =
-            data.getValue(row, 8);
+const dialogue =
+    data.getValue(row, 8);
+
+const exampleValue =
+    data.getValue(row, 9);
 
 
         // Ignore unfinished rows.
@@ -984,35 +990,56 @@ function handleSheetResponse(response) {
 
         npcData.push({
 
-            id: String(id),
+    id: String(id),
 
-            character: String(character),
+    character: String(character),
 
-            region: String(region),
+    npcName:
+        String(npcName || ''),
 
-            location: String(location),
+    region: String(region),
 
-            x: Number(x),
+    location: String(location),
 
-            y: Number(y),
+    x: Number(x),
 
-            status: String(status),
+    y: Number(y),
 
-dialogue:
-    String(dialogue || ''),
+    status: String(status),
 
-example:
-    exampleValue === true ||
-    String(exampleValue).toLowerCase() === 'true'
+    dialogue:
+        String(dialogue || ''),
 
-        });
+    example:
+        exampleValue === true ||
+        String(exampleValue).toLowerCase() === 'true'
+
+});
 
     }
 
 
     allNpcData = npcData;
 
+function getNpcDisplayName(npc) {
 
+    const character =
+        (npc.character || '').trim();
+
+    const npcName =
+        (npc.npcName || '').trim();
+
+
+    if (npcName) {
+        return character + ' ' + npcName;
+    }
+
+
+    return character;
+
+}
+
+    
     createNpcMarkers(
         allNpcData,
         regionSelect.value
