@@ -772,7 +772,7 @@ function formatPopupText(text) {
 
 }
 
-        function getNpcDisplayName(npc) {
+       function getNpcDisplayName(npc) {
 
     const character =
         (npc.character || '').trim();
@@ -785,7 +785,13 @@ function formatPopupText(text) {
         return character + ' ' + npcName;
     }
 
-       function getTrainerSprite(npc) {
+
+    return character;
+
+}
+
+
+function getTrainerSprite(npc) {
 
     const key =
         (npc.region || '').trim() +
@@ -794,11 +800,6 @@ function formatPopupText(text) {
 
 
     return trainerSprites[key] || '';
-
-}     
-
-
-    return character;
 
 }
         
