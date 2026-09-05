@@ -858,15 +858,63 @@ function formatPopupText(text) {
 
 }
 
-      function getBaseTrainerClass(character) {
+        const trainerDisplayAliases = {
 
-    return (character || '')
-        .trim()
+    // Outfit / environment variants
+    'Ace Trainer Snow':
+        'Ace Trainer',
+
+    // Furisode Girl colour variants
+    'Furisode Girl Black':
+        'Furisode Girl',
+
+    'Furisode Girl Blue':
+        'Furisode Girl',
+
+    'Furisode Girl Pink':
+        'Furisode Girl',
+
+    'Furisode Girl White':
+        'Furisode Girl',
+
+    // Team Star variants
+    'Star Grunt S':
+        'Star Grunt',
+
+    'Star Grunt V':
+        'Star Grunt'
+
+};
+
+     function getBaseTrainerClass(character) {
+
+    let base =
+        (character || '').trim();
+
+
+    // Remove technical number / gender variants.
+    //
+    // Examples:
+    // Swimmer 2f  -> Swimmer
+    // Swimmer f   -> Swimmer
+    // Fisherman 2 -> Fisherman
+    // Ace Trainer Snow f -> Ace Trainer Snow
+
+    base = base
         .replace(
             /\s+(?:\d+\s*[fm]?|[fm])$/i,
             ''
         )
         .trim();
+
+
+    // Remove any named technical variant
+    // that should not appear publicly.
+
+    return (
+        trainerDisplayAliases[base] ||
+        base
+    );
 
 }
 
