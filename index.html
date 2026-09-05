@@ -319,6 +319,34 @@
 
 .region-map-image {
     transition: opacity 0.25s ease-in-out;
+}  
+
+     /* Sprite credits button */
+
+.sprite-credits-control {
+    font-family: Arial, sans-serif;
+}
+
+.sprite-credits-button {
+    display: inline-block;
+
+    padding: 7px 10px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    border-radius: 6px;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+
+    color: #222;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.sprite-credits-button:hover {
+    background: white;
 }   
 
     </style>
@@ -438,6 +466,64 @@ legend.onAdd = function() {
 
 
 legend.addTo(map);
+
+      // ======================================================
+// SPRITE CREDITS
+// ======================================================
+
+const spriteCreditsControl = L.control({
+    position: 'bottomleft'
+});
+
+
+spriteCreditsControl.onAdd = function() {
+
+    const container = L.DomUtil.create(
+        'div',
+        'sprite-credits-control'
+    );
+
+
+    const link =
+        document.createElement('a');
+
+    link.className =
+        'sprite-credits-button';
+
+    link.href =
+        'https://play.pokemonshowdown.com/sprites/trainers/?view=sprites&filter=credited';
+
+    link.target =
+        '_blank';
+
+    link.rel =
+        'noopener noreferrer';
+
+    link.textContent =
+        'Sprite Credits';
+
+    link.title =
+        'View trainer sprite artists and credits';
+
+
+    container.appendChild(link);
+
+
+    L.DomEvent.disableClickPropagation(
+        container
+    );
+
+    L.DomEvent.disableScrollPropagation(
+        container
+    );
+
+
+    return container;
+
+};
+
+
+spriteCreditsControl.addTo(map);  
         
         // Region selector
 
@@ -794,8 +880,6 @@ function formatPopupText(text) {
 function getTrainerSprite(npc) {
 
     const key =
-        (npc.region || '').trim() +
-        '|' +
         (npc.character || '').trim();
 
 
