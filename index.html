@@ -858,11 +858,14 @@ function formatPopupText(text) {
 
 }
 
-        function getBaseTrainerClass(character) {
+      function getBaseTrainerClass(character) {
 
     return (character || '')
         .trim()
-        .replace(/\s+[fm]$/i, '')
+        .replace(
+            /\s+(?:\d+\s*[fm]?|[fm])$/i,
+            ''
+        )
         .trim();
 
 }
