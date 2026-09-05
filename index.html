@@ -1082,18 +1082,41 @@ popupContent +=
     '</div>' +
 
 '</div>';
-if (npc.example) {
+const hasDialogue =
+    (npc.dialogue || '').trim() !== '';
 
-    popupContent +=
-        '<br>' +
-        '<span class="example-label">' +
-formatPopupText(
-    npc.author || 'Writing Example'
-) +
-'</span>';
+const hasAuthor =
+    (npc.author || '').trim() !== '';
 
 
-    if (npc.dialogue) {
+// Show attribution / writing whenever supplied.
+// The Example checkbox controls the purple pin,
+// not whether dialogue is allowed to appear.
+
+if (
+    npc.example ||
+    hasDialogue ||
+    hasAuthor
+) {
+
+    popupContent += '<br>';
+
+
+    if (hasAuthor || npc.example) {
+
+        popupContent +=
+            '<span class="example-label">' +
+            formatPopupText(
+                hasAuthor
+                    ? npc.author
+                    : 'Writing Example'
+            ) +
+            '</span>';
+
+    }
+
+
+    if (hasDialogue) {
 
         popupContent +=
             '<div class="example-dialogue">' +
@@ -1104,7 +1127,12 @@ formatPopupText(
 
     }
 
-} else {
+}
+
+
+// Normal NPCs still show their reservation status.
+
+if (!npc.example) {
 
     popupContent +=
         '<br><br>' +
@@ -1112,7 +1140,6 @@ formatPopupText(
         formatPopupText(effectiveStatus);
 
 }
-
 
 marker.bindPopup(
     popupContent,
