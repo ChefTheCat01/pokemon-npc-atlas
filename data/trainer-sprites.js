@@ -1,6 +1,6 @@
 const trainerSprites = {
 
-    'Hoenn|Gym Trainer':
-        'sprites/trainers/hoenn-gym-trainer.png'
+    'Gym Trainer':
+        'sprites/trainers/gym-trainer.png'
 
 };
