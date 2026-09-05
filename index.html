@@ -917,9 +917,17 @@ function getTrainerSprite(npc) {
 
 }
         
+      let openNpcId = null;  
+        
         function createNpcMarkers(npcData, regionName) {
 
-    // Remove markers from the previously displayed region.
+        // Remember which NPC popup is currently open.
+        // The marker layer is rebuilt whenever Google Sheets refreshes.
+
+const npcToReopen =
+    openNpcId;
+            
+            // Remove markers from the previously displayed region.
     npcMarkerLayer.clearLayers();
 
 
@@ -1079,8 +1087,10 @@ if (npc.example) {
     popupContent +=
         '<br>' +
         '<span class="example-label">' +
-        'WRITING EXAMPLE' +
-        '</span>';
+formatPopupText(
+    npc.author || 'Writing Example'
+) +
+'</span>';
 
 
     if (npc.dialogue) {
@@ -1108,14 +1118,54 @@ marker.bindPopup(
     popupContent,
     {
         maxWidth: 340,
-        maxHeight: 260
+        maxHeight: 260,
+
+        // Clicking the map should not dismiss
+        // a dialogue somebody is reading.
+        closeOnClick: false,
+
+        // Opening another NPC still closes
+        // the previous one.
+        autoClose: true,
+
+        // Keep the popup visible while panning.
+        keepInView: true
     }
 );
+
+
+marker.on('popupopen', function() {
+
+    openNpcId =
+        npc.id;
+
+});
+
+
+marker.on('popupclose', function() {
+
+    if (openNpcId === npc.id) {
+
+        openNpcId =
+            null;
+
+    }
+
+});
 
 
         // Add the marker to the NPC group,
         // rather than directly to the map.
         marker.addTo(npcMarkerLayer);
+
+        // If this NPC's popup was open before
+// the 10-second data refresh, reopen it.
+
+if (npc.id === npcToReopen) {
+
+    marker.openPopup();
+
+}
 
     });
 
@@ -1279,6 +1329,9 @@ const dialogue =
 const exampleValue =
     data.getValue(row, 9);
 
+        const author =
+    data.getValue(row, 10);
+
 
         // Ignore unfinished rows.
         if (
@@ -1314,11 +1367,14 @@ const exampleValue =
     status: String(status),
 
     dialogue:
-        String(dialogue || ''),
+    String(dialogue || ''),
 
-    example:
-        exampleValue === true ||
-        String(exampleValue).toLowerCase() === 'true'
+example:
+    exampleValue === true ||
+    String(exampleValue).toLowerCase() === 'true',
+
+author:
+    String(author || '')
 
 });
 
