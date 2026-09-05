@@ -893,6 +893,13 @@ function formatPopupText(text) {
 
 function getTrainerSprite(npc) {
 
+    // If the sprite registry has not loaded yet,
+    // simply use the normal coloured pin.
+    if (typeof trainerSprites === 'undefined') {
+        return '';
+    }
+
+
     const exactKey =
         (npc.character || '').trim();
 
