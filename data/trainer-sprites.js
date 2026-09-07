@@ -85,6 +85,10 @@ const trainerSprites = {
     'Expert f': 'sprites/trainers/expert-f.png',
     'Expert': 'sprites/trainers/expert.png',
 
+    'Firebreather': 'sprites/trainer/firebreather.png',
+
+    'Firefighter': 'sprites/trainer/firefighter.png',
+
     'Fisherman 2': 'sprites/trainers/fisherman-2.png',
     'Fisherman': 'sprites/trainers/fisherman.png',
 
