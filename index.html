@@ -1410,17 +1410,18 @@ const exampleValue =
 
         // Ignore unfinished rows.
         if (
-            !id ||
-            !character ||
-            !region ||
-            !location ||
-            x === null ||
-            y === null ||
-            !status
-        ) {
-            continue;
-        }
-
+    !id ||
+    !character ||
+    !region ||
+    !location ||
+    x === null ||
+    x === '' ||
+    y === null ||
+    y === '' ||
+    !status
+) {
+    continue;
+}
 
         npcData.push({
 
