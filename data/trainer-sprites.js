@@ -169,16 +169,35 @@ const trainerSprites = {
     'Old Couple': 'sprites/trainers/oldcouple.png',
     'Owner': 'sprites/trainers/owner.png',
 
-    'Professor Birch': 'sprites/trainers/birch.png',
-    'Professor Elm': 'sprites/trainers/elm.png',
-    'Professor Juniper': 'sprites/trainers/juniper.png',
-    'Professor Kukui': 'sprites/trainers/kukui.png',
-    'Professor Laventon': 'sprites/trainers/laventon.png',
-    'Professor Magnolia': 'sprites/trainers/magnolia.png',
-    'Professor Oak': 'sprites/trainers/oak.png',
-    'Professor Rowan': 'sprites/trainers/rowan.png',
-    'Professor Sada': 'sprites/trainers/sada.png',
-    'Professor Sycamore': 'sprites/trainers/sycamore.png',
+       'Professor Birch':
+        'sprites/trainers/birch.png',
+
+    'Professor Elm':
+        'sprites/trainers/elm.png',
+
+    'Professor Juniper':
+        'sprites/trainers/juniper.png',
+
+    'Professor Kukui':
+        'sprites/trainers/kukui.png',
+
+    'Professor Laventon':
+        'sprites/trainers/laventon.png',
+
+    'Professor Magnolia':
+        'sprites/trainers/magnolia.png',
+
+    'Professor Oak':
+        'sprites/trainers/oak.png',
+
+    'Professor Rowan':
+        'sprites/trainers/rowan.png',
+
+    'Professor Sada':
+        'sprites/trainers/sada.png',
+
+    'Professor Sycamore':
+        'sprites/trainers/sycamore.png',
     
     'Parasol Lady': 'sprites/trainers/parasollady.png',
     'Picnicker': 'sprites/trainers/picnicker.png',
@@ -309,6 +328,6 @@ const trainerSprites = {
     'Young Athlete': 'sprites/trainers/youngathlete.png',
 
     'Young Couple': 'sprites/trainers/youngcouple.png',
-    'Youngster': 'sprites/trainers/youngster.png'
+    'Youngster': 'sprites/trainers/youngster.png',
 
 };
