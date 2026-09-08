@@ -290,6 +290,9 @@ const trainerSprites = {
     'Waitress': 'sprites/trainers/waitress.png',
     'Worker': 'sprites/trainers/worker.png',
 
+    'Yell Grunt': 'sprites/trainers/yellgrunt.png'
+    'Yell Grunt f': 'sprites/trainers/yellgrunt-f.png'
+
     'Young Athlete f': 'sprites/trainers/youngathlete-f.png',
     'Young Athlete': 'sprites/trainers/youngathlete.png',
 
